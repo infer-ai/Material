@@ -403,9 +403,9 @@ public class MaterialView : UIView {
 	- Parameter animation: A CAAnimation instance.
 	*/
 	public func animate(animation: CAAnimation) {
-		animation.delegate = self
+		animation.delegate = self as? CAAnimationDelegate
 		if let a: CABasicAnimation = animation as? CABasicAnimation {
-			a.fromValue = (nil == layer.presentationLayer() ? layer : layer.presentationLayer() as! CALayer).valueForKeyPath(a.keyPath!)
+			a.fromValue = (nil == layer.presentationLayer() ? layer : layer.presentationLayer()! as CALayer).valueForKeyPath(a.keyPath!)
 		}
 		if let a: CAPropertyAnimation = animation as? CAPropertyAnimation {
 			layer.addAnimation(a, forKey: a.keyPath!)
@@ -421,7 +421,7 @@ public class MaterialView : UIView {
 	running an animation.
 	- Parameter anim: The currently running CAAnimation instance.
 	*/
-	public override func animationDidStart(anim: CAAnimation) {
+	public func animationDidStart(anim: CAAnimation) {
 		(delegate as? MaterialAnimationDelegate)?.materialAnimationDidStart?(anim)
 	}
 	
@@ -433,7 +433,7 @@ public class MaterialView : UIView {
 	because it was completed or interrupted. True if completed, false 
 	if interrupted.
 	*/
-	public override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+	public func animationDidStop(anim: CAAnimation, finished flag: Bool) {
 		if let a: CAPropertyAnimation = anim as? CAPropertyAnimation {
 			if let b: CABasicAnimation = a as? CABasicAnimation {
 				if let v: AnyObject = b.toValue {
